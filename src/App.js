@@ -1,10 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import CitySearch from './components/CitySearch';
+import EventList from './components/EventList';
 
 function App() {
   return (
     <div className="App">
+      <CitySearch />
+      <EventList />
     </div>
   );
 }
