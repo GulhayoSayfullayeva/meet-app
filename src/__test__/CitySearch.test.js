@@ -1,13 +1,14 @@
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CitySearch from '../components/CitySearch';
+import App from '../App';
 import { extractLocations, getEvents } from '../api';
 
 describe('<CitySearch /> component', () => {
     let CitySearchComponent;
 
     beforeEach(() => {
-        CitySearchComponent = render(<CitySearch/>);
+        CitySearchComponent = render(<CitySearch allLocations={[]}/>);
     })
 
   test('suggestion list is hidden default', () => {
@@ -17,6 +18,7 @@ describe('<CitySearch /> component', () => {
   test('renders a suggestionList when city box is clicked', async() => {
     const user = userEvent.setup();
     const cityTextBox = CitySearchComponent.queryByRole('textbox');
+    
     await user.click(cityTextBox);
     const suggestionList = CitySearchComponent.queryByRole('list');
     expect(suggestionList).toBeInTheDocument();
@@ -58,7 +60,7 @@ describe('<CitySearch /> component', () => {
     const user = userEvent.setup();
     const allEvents = await getEvents();
     const allLocations = extractLocations(allEvents);
-    CitySearchComponent.rerender(<CitySearch allLocations={allLocations}/>);
+    CitySearchComponent.rerender(<CitySearch allLocations={allLocations} setCurrentCity={() => { }}/>);
 
     const cityTextBox = CitySearchComponent.queryByRole('textbox');
     await user.type(cityTextBox, 'Berlin');
@@ -71,6 +73,25 @@ describe('<CitySearch /> component', () => {
     expect(cityTextBox).toHaveValue(Berlinsuggestion.textContent);
 
 
-  })
+  });
 
 });
+
+describe('<CitySearch/>, integration', () => {
+
+    test('renders suggestionList when app is rendered and user focus in textbox', async() => {
+      const user = userEvent.setup();
+      const appComponent = render(<App />);
+      const appDom = appComponent.container.firstChild;
+
+      const citySearchDom = appDom.querySelector('#city-search');
+      const textbox = within(citySearchDom).queryByRole('textbox');
+      await user.click(textbox);
+      
+      const allEvents = await getEvents();
+      const allLocations = extractLocations(allEvents);
+
+      const suggestionList = within(citySearchDom).queryAllByRole('listitem');
+      expect(suggestionList.length).toBe(allLocations.length + 1);
+    });
+})

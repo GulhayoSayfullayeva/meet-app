@@ -11,7 +11,6 @@ const NumberOfEvents = () => {
         <div id="numberOfEvents">
             <input
               type="text"
-              defaultValue='32'
               value={eventNumber}
               onChange={handleInputChange}
             />
