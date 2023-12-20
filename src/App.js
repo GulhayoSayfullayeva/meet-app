@@ -22,11 +22,11 @@ function App() {
 
   useEffect(() => {
     fetchData();
-  }, [currentCity]);
+  }, [currentCity, noe]);
   return (
     <div className="App">
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity}/>
-      <NumberOfEvents />
+      <NumberOfEvents setNumberOfEvents={setNoe} />
       <EventList events={events}/>
     </div>
   );
