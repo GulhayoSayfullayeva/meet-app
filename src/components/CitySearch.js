@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const CitySearch = ({allLocations, setCurrentCity}) => {
+const CitySearch = ({allLocations, setCurrentCity, setInfoAlert}) => {
     const [showSuggestion, setShowSuggestion] = useState(false);
     const [query, setQuery] = useState('');
     const [suggestions, setSuggaestions] = useState([]);
@@ -13,6 +13,14 @@ const CitySearch = ({allLocations, setCurrentCity}) => {
         setQuery(value);
         setSuggaestions(filteredLocations);
        // setShowSuggestion(false);
+
+       let infoText;
+       if (filteredLocations.length === 0) {
+          infoText = "We can not find the city you are looking for. Please try another city"
+       } else {
+          infoText = ""
+        }
+        setInfoAlert(infoText);
       
 
     }
@@ -21,6 +29,7 @@ const CitySearch = ({allLocations, setCurrentCity}) => {
       setQuery(value);
       setShowSuggestion(false);
       setCurrentCity(value);
+      setInfoAlert('');
     } 
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import CitySearch from './components/CitySearch';
-import { Alert } from './components/Alert';
+import { InfoAlert, Alert, ErrorAlert } from './components/Alert';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { extractLocations, getEvents } from './api';
@@ -13,6 +13,7 @@ function App() {
   const [allLocations, setAllLocations] = useState([]);
   const [currentCity, setCurrentCity] = useState('See all cities');
   const [infoAlert, setInfoAlert] = useState('');
+  const [errorAlert, setErrorAlert] = useState('');
 
   
 
@@ -30,10 +31,13 @@ function App() {
   return (
     <div className="App">
       <div className="alerts-container">
-        {infoAlert.length ? <Alert text={infoAlert}/> : null}
+        {infoAlert.length ? <InfoAlert text={infoAlert}/> : null}
       </div>
-      <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity}/>
-      <NumberOfEvents setNumberOfEvents={setNoe} />
+      <div className="alerts-container">
+        {errorAlert.length ? <ErrorAlert text={errorAlert}/> : null}
+      </div>
+      <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert}/>
+      <NumberOfEvents setNumberOfEvents={setNoe} setErrorAlert={setErrorAlert} />
       <EventList events={events}/>
     </div>
   );
