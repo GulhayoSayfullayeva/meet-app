@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import CitySearch from './components/CitySearch';
-import { InfoAlert, Alert, ErrorAlert } from './components/Alert';
+import { InfoAlert, Alert, ErrorAlert, WarningAlert } from './components/Alert';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { extractLocations, getEvents } from './api';
@@ -14,10 +14,15 @@ function App() {
   const [currentCity, setCurrentCity] = useState('See all cities');
   const [infoAlert, setInfoAlert] = useState('');
   const [errorAlert, setErrorAlert] = useState('');
-
+  const [warningAlert, setWarningError] = useState('');
   
 
   useEffect(() => {
+    if (navigator.onLine) {
+      setWarningError('');
+    } else {
+      setWarningError('You are gone offline, events are loaded from cache!');
+    }
     fetchData();
   }, [currentCity, noe]);
   
@@ -35,6 +40,9 @@ function App() {
       </div>
       <div className="alerts-container">
         {errorAlert.length ? <ErrorAlert text={errorAlert}/> : null}
+      </div>
+      <div className="alerts-container">
+        {warningAlert.length ? <WarningAlert text={warningAlert}/> : null}
       </div>
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert}/>
       <NumberOfEvents setNumberOfEvents={setNoe} setErrorAlert={setErrorAlert} />
