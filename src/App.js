@@ -5,6 +5,8 @@ import { InfoAlert, Alert, ErrorAlert, WarningAlert } from './components/Alert';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { extractLocations, getEvents } from './api';
+import CityEventsChart from './components/CityEventsChart';
+import EventGenresChart from './components/EventGenresChart';
 
 function App() {
 
@@ -35,6 +37,7 @@ function App() {
   }
   return (
     <div className="App">
+      <h1>Meet App</h1>
       <div className="alerts-container">
         {infoAlert.length ? <InfoAlert text={infoAlert}/> : null}
       </div>
@@ -46,6 +49,11 @@ function App() {
       </div>
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert}/>
       <NumberOfEvents setNumberOfEvents={setNoe} setErrorAlert={setErrorAlert} />
+      <div className="charts-container">
+         <EventGenresChart events={events} />
+         <CityEventsChart allLocations={allLocations} events={events} />
+      </div>
+      
       <EventList events={events}/>
     </div>
   );
